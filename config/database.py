@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from config.env import username, password, host, port, database_name
 
 # URL of a database connection
-SQLALCHEMY_DATABASE_URL = f"mariadb+pymariadb://{username}:{password}@{host}:{port}/{database_name}"
+SQLALCHEMY_DATABASE_URL = f"mariadb+mariadbconnector://{username}:{password}@{host}:{port}/{database_name}"
 
 # Permet de définir les paramètre de connexion à la base
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

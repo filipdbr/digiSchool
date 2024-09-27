@@ -5,3 +5,4 @@ uvicorn        # ASGI server
 sqlalchemy     # ORM library
 python-dotenv  # Env variables manager
 pydantic       # Data validation
+mariadb        # MariaDB driver
