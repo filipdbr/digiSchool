@@ -2,9 +2,11 @@
 
 ### How to set up the project? 
 
+The below instruction is created for Windows OS, if you use another system, the commands may not work.
+
 1. Clone the repository
 ```bash
-1. git clone <repository-url>
+git clone <repository-url>
 cd <repository-directory>
 ```
 
@@ -12,8 +14,7 @@ cd <repository-directory>
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate  # Linux/Mac
-.venv\Scripts\activate     # Windows
+.venv\Scripts\activate     # for Windows
 ```
 
 3. Install dependencies
