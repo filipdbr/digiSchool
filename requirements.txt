@@ -1,2 +1,7 @@
-fastapi~=0.115.0
-pymongo
+# todo better with versions or without - a poser au prof
+fastapi        # Web API framework
+pymongo        # MongoDB driver
+uvicorn        # ASGI server
+sqlalchemy     # ORM library
+python-dotenv  # Env variables manager
+pydantic       # Data validation
