@@ -1,3 +1,9 @@
+"""
+This script loads database configuration from a `.env` file using the `python-dotenv` library.
+
+`load_dotenv()` makes these values accessible via `os.getenv()`.
+"""
+
 import os
 from dotenv import load_dotenv
 

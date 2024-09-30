@@ -1,4 +1,6 @@
-# todo better with versions or without - a poser au prof
+# List of dependencies required for running the project.
+
+# todo better with versions or without ? - we need to ask this question
 fastapi        # Web API framework
 pymongo        # MongoDB driver
 uvicorn        # ASGI server
@@ -6,3 +8,4 @@ sqlalchemy     # ORM library
 python-dotenv  # Env variables manager
 pydantic       # Data validation
 mariadb        # MariaDB driver
+pytest         # for testing

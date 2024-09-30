@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum, ForeignKey
+from sqlalchemy.orm import relationship
 
-from src.models.base_model import Base
-
-# todo add relations
+from src.models.sql.base_model import Base
 
 class Student(Base):
     """
@@ -13,10 +12,14 @@ class Student(Base):
     # Columns from our MariaDB table t_eleve
     id = Column(Integer, primary_key=True)
     nom = Column(String(100), default = None)
-    prenom = Column(String(100), default = None)
+    prenom = Column(String(100), default = None, nullable = True)
     date_naissance = Column(DateTime, default = None)
-    adresse = Column(String(250), default = None)
+    adresse = Column(String(250), default = None, nullable = True)
     sexe = Column(Enum('HOMME', 'FEMME'), default = None)
+    classe_id = Column(Integer, ForeignKey("t_classe.id"), nullalble = True) # column containing foreign key of t_classe table
 
-    # relations
+    # Relationship many to one
+    classe = relationship("Classe", back_populates="eleves")
+
+
 
