@@ -56,7 +56,7 @@ my_app/
 │   │   │   ├── base_model.py      # Base class for SQLAlchemy models
 │   │   │   ├── student.py         # SQL model for students
 │   │   │   ├── classe.py          # SQL model for classes
-│   │   │   ├── prof.py            # SQL model for professors
+│   │   │   ├── professor.py       # SQL model for professors
 │   │   │   └── notes.py           # SQL model for notes
 │   │   │
 │   │   └── nosql/                 # Data models for MongoDB (optional)
