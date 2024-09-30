@@ -5,7 +5,7 @@ It includes configuration for connecting to a MariaDB database and a function to
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from config.env import username, password, host, port, database_name
+from utils.env import username, password, host, port, database_name
 
 # URL for the database connection
 SQLALCHEMY_DATABASE_URL = f"mariadb+mariadbconnector://{username}:{password}@{host}:{port}/{database_name}"

@@ -7,64 +7,64 @@ It checks if the collection already exists to prevent duplicate creation.
 Run during the initial setup to configure MongoDB.
 """
 
-from config.database_nosql import get_mongo_db
+from utils.database_nosql import get_db_nosql
 
 # Connect to MongoDB
-db = get_mongo_db()
+db = get_db_nosql()
 
 # Define validation schema for students collection
 student_validator = {
     "$jsonSchema": {
         "bsonType": "object",
-        "required": ["_id", "nom", "prenom", "date_naissance", "sexe"],
+        "required": ["student_id", "last_name", "first_name", "date_of_birth", "gender"],
         "properties": {
-            "_id": {
+            "student_id": {
                 "bsonType": "int",
                 "description": "must be an integer and is required"
             },
-            "nom": {
+            "last_name": {
                 "bsonType": "string",
                 "description": "must be a string and is required"
             },
-            "prenom": {
+            "first_name": {
                 "bsonType": "string",
                 "description": "must be a string and is required"
             },
-            "date_naissance": {
+            "date_of_birth": {
                 "bsonType": "date",
                 "description": "must be a date and is required"
             },
-            "adresse": {
+            "address": {
                 "bsonType": "string",
                 "description": "must be a string"
             },
-            "sexe": {
+            "gender": {
                 "enum": ["HOMME", "FEMME"],
                 "description": "must be either HOMME or FEMME and is required"
             },
-            "classe": {
+            "student_class": {
                 "bsonType": "object",
                 "properties": {
                     "class_id": {
                         "bsonType": "int",
                         "description": "must be an integer"
                     },
-                    "nom": {
+                    "name": {
                         "bsonType": "string",
                         "description": "must be a string"
                     },
                     "professor": {
                         "bsonType": "object",
                         "properties": {
-                            "prof_id": {
+                            "professor_id": {
                                 "bsonType": "int",
                                 "description": "must be an integer"
                             },
-                            "nom": {
+                            "last_name": {
                                 "bsonType": "string",
                                 "description": "must be a string"
                             },
-                            "prenom": {
+                            "first_name": {
                                 "bsonType": "string",
                                 "description": "must be a string"
                             }
@@ -77,49 +77,49 @@ student_validator = {
                 "items": {
                     "bsonType": "object",
                     "properties": {
-                        "note_id": {
+                        "grade_id": {
                             "bsonType": "int",
                             "description": "must be an integer"
                         },
-                        "matiere": {
+                        "subject": {
                             "bsonType": "object",
                             "properties": {
-                                "matiere_id": {
+                                "subject_id": {
                                     "bsonType": "int",
                                     "description": "must be an integer"
                                 },
-                                "nom": {
+                                "name": {
                                     "bsonType": "string",
                                     "description": "must be a string"
                                 }
                             }
                         },
-                        "note": {
+                        "grade_value": {
                             "bsonType": "int",
                             "description": "must be an integer"
                         },
-                        "date_saisie": {
+                        "date_entered": {
                             "bsonType": "date",
                             "description": "must be a date"
                         },
-                        "trimestre": {
+                        "trimester": {
                             "bsonType": "object",
                             "properties": {
-                                "trimestre_id": {
+                                "trimester_id": {
                                     "bsonType": "int",
                                     "description": "must be an integer"
                                 },
-                                "nom": {
+                                "name": {
                                     "bsonType": "string",
                                     "description": "must be a string"
                                 }
                             }
                         },
-                        "avis": {
+                        "comment": {
                             "bsonType": "string",
                             "description": "must be a string"
                         },
-                        "avancement": {
+                        "progress": {
                             "bsonType": "double",
                             "description": "must be a double"
                         }
@@ -130,12 +130,16 @@ student_validator = {
     }
 }
 
-
 # Create students collection with validation if it does not already exist
 try:
     # Check if the collection already exists
     if "students" not in db.list_collection_names():
-        db.create_collection("students", validator={"$jsonSchema": student_validator})
+        db.create_collection(
+            "students",
+            validator={
+                "$jsonSchema": student_validator["$jsonSchema"]  # Access the $jsonSchema from the validator dictionary
+            }
+        )
         print("Collection 'students' created successfully")
     else:
         print("Collection 'students' already exists. Skipping creation.")

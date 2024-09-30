@@ -1,6 +1,6 @@
 import unittest
 from pymongo.errors import ConnectionFailure
-from config.database_nosql import get_db_nosql, get_db_nosql
+from utils.database_nosql import get_db_nosql, get_db_nosql
 
 
 class TestMongoDBConnection(unittest.TestCase):

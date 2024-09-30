@@ -2,7 +2,7 @@ import unittest
 
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
-from config.database_sql import get_db_sql
+from utils.database_sql import get_db_sql
 
 class TestSQLDatabaseConnection(unittest.TestCase):
 

@@ -16,7 +16,7 @@ mongo_url = os.getenv('MONGO_URL')
 client = MongoClient(mongo_url)
 
 # Get the database
-mongodb = client.get_database()
+mongodb = client["digiSchool"]
 
 # Function to get the connection
 def get_db_nosql():

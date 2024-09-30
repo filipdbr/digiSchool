@@ -1,5 +1,5 @@
-from config.database_nosql import get_db_nosql
-from config.database_sql import get_db_sql
+from utils.database_nosql import get_db_nosql
+from utils.database_sql import get_db_sql
 from src.models.sql.student_model import Student
 
 # Connect to both databases
