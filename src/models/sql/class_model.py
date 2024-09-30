@@ -11,9 +11,9 @@ class Class(Base):
     __tablename__ = 't_classe'
 
     # Columns from db table t_classe
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    class_id = Column(Integer, primary_key=True, autoincrement=True, name = "id")
     name = Column(String(100), default = None,nullable = True, name = "nom")
-    professor_id = Column(Integer, ForeignKey('t_prof.id'))
+    professor_id = Column(Integer, ForeignKey('t_prof.id'), name="prof")
 
     # Relations
 
@@ -22,3 +22,6 @@ class Class(Base):
 
     # many to one with prof
     professor = relationship("Professor", back_populates="classes")
+
+    # one to many with grades
+    grades = relationship("Grade", back_populates="student_class")

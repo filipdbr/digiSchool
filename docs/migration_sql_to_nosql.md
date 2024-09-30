@@ -45,7 +45,7 @@ The **student document** in MongoDB may contain nested structures that represent
       "gender": "<string>"
     }
   },
-  "notes": [
+  "grades": [
     {
       "grade_id": "<string>",
       "subject": {
