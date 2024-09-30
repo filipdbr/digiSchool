@@ -16,7 +16,7 @@ class SubjectSchema(BaseModel):
         orm_mode (bool): Enables compatibility with ORM objects (e.g., SQLAlchemy models).
     """
     subject_id: Optional[int]
-    name: Optional[String]
+    name: Optional[str]
 
     class Config:
         orm_mode = True  # Enables using instances of SQLAlchemy models directly

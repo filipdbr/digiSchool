@@ -10,13 +10,13 @@ class Student(Base):
     __tablename__ = 't_eleve'  # Table name in our database in MariaDB
 
     # Columns from db table t_eleve
-    student_id = Column(Integer, primary_key=True, autoincrement=True)
-    last_name = Column(String(100), default=None, name="nom")
-    first_name = Column(String(100), default=None, nullable=True, name="prenom")
-    birth_date = Column(DateTime, default=None, name="date_naissance")
-    address = Column(String(250), default=None, nullable=True, name="adresse")
-    gender = Column(Enum('HOMME', 'FEMME'), default=None, name="sexe")
-    class_id = Column(Integer, ForeignKey("t_classe.id"), nullable=True, name="classe")
+    student_id = Column('id', Integer, primary_key=True)
+    last_name = Column('nom', String(100), nullable=False, default=None)
+    first_name = Column('prenom', String(100), nullable=True, default=None)
+    birth_date = Column('date_naissance', DateTime, nullable=False, default=None)
+    address = Column('adresse', String(250), default=None, nullable=True)
+    gender = Column('sexe', String(10), default=None)
+    class_id = Column('classe', Integer, ForeignKey('t_classe.id'))
 
     # Relations
     # Many to one with class

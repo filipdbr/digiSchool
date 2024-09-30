@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
+
 from src.models.sql.base_model import Base
 
 
@@ -10,8 +11,8 @@ class Subject(Base):
     """
     __tablename__ = 't_matiere'
 
-    subject_id = Column(Integer, primary_key=True, autoincrement=True, name = "idmatiere")
-    name = Column(String(250), unique=True, nullable=False, name = "nom")
+    subject_id = Column("idmatiere", Integer, primary_key=True, autoincrement=True)
+    name = Column("nom", String(250), unique=True, nullable=False)
 
     # Relationships
 

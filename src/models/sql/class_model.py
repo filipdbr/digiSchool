@@ -11,9 +11,9 @@ class Class(Base):
     __tablename__ = 't_classe'
 
     # Columns from db table t_classe
-    class_id = Column(Integer, primary_key=True, autoincrement=True, name = "id")
-    name = Column(String(100), default = None,nullable = True, name = "nom")
-    professor_id = Column(Integer, ForeignKey('t_prof.id'), name="prof")
+    class_id = Column('id', Integer, primary_key=True, autoincrement=True)
+    name = Column('nom', String(100), default=None, nullable=True)
+    professor_id = Column('prof', Integer, ForeignKey('t_prof.id'))
 
     # Relations
 

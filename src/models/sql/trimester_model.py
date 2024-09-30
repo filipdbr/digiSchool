@@ -8,8 +8,8 @@ class Trimester(Base):
     """
     __tablename__ = 't_trimestre'
 
-    trimester_id = Column(Integer, primary_key=True, autoincrement=True, name="idtrimestre")
-    name = Column(String(100), unique=True, nullable=False, name="nom")
+    trimester_id = Column("idtrimestre", Integer, primary_key=True, autoincrement=True)
+    name = Column("nom", String(100), unique=True, nullable=False)
 
     # Relationships
     grades = relationship("Grade", back_populates="trimester")

@@ -18,12 +18,12 @@ class ProfessorSchema(BaseModel):
     Config:
         orm_mode (bool): Enables compatibility with ORM objects (e.g., SQLAlchemy models).
     """
-    prof_id = Optional[int]
-    last_name = Optional[str]
-    first_name = Optional[str]
-    birth_date = Optional[datetime]
-    address = Optional[str]
-    gender = Optional[str]
+    teacher_id: Optional[int] = None
+    last_name: Optional[str] = None
+    first_name: Optional[str] = None
+    birth_date: Optional[datetime] = None
+    address: Optional[str] = None
+    gender: Optional[str] = None
 
     class Config:
         orm_mode = True  # Enables using instances of SQLAlchemy models directly

@@ -81,7 +81,7 @@ my_app/
     │   ├── test_student.py
     │
     └── integration/               # Integration tests (migration, complete data flow)
-        ├── test_migration.py
+        ├── test_data_migration.py
         └── test_student_integration.py
 ```
 

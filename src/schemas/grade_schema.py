@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 from src.schemas.subject_schema import SubjectSchema
+from src.schemas.trimester_schema import TrimesterSchema
 
 
 class GradeSchema(BaseModel):
@@ -20,13 +21,13 @@ class GradeSchema(BaseModel):
     Config:
         orm_mode (bool): Enables compatibility with ORM objects (e.g., SQLAlchemy models).
     """
-    grade_id = Optional[int]
-    subject = Optional[SubjectSchema]
-    grade_value = Optional[int]
-    date_entered = Optional[datetime]
-    trimester = Optional[TrimesterSchema]
-    comment = Optional[str]
-    progress = Optional[float]
+    grade_id: Optional[int]
+    subject: Optional[SubjectSchema]
+    grade_value: Optional[int]
+    date_entered: Optional[datetime]
+    trimester: Optional[TrimesterSchema]
+    comment: Optional[str]
+    progress: Optional[float]
 
     class Config:
         orm_mode = True  # Enables using instances of SQLAlchemy models directly

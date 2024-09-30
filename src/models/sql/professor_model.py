@@ -11,12 +11,12 @@ class Professor(Base):
     __tablename__ = 't_prof'
 
     # Columns from db table t_prof
-    prof_id = Column(Integer, primary_key=True, name = "id")
-    last_name = Column(String(100), nullable=False, default=None, name = "nom")
-    first_name = Column(String(100), nullable=True, default=None, name = "prenom")
-    birth_date = Column(DateTime, nullable = False, default=None, name="date_naissance")
-    address = Column(String(250), default=None, nullable=True, name="adresse")
-    gender = Column(Enum('HOMME', 'FEMME'), default=None, name="sexe")
+    teacher_id = Column('id', Integer, primary_key=True)
+    last_name = Column('nom', String(100), nullable=False, default=None)
+    first_name = Column('prenom', String(100), nullable=True, default=None)
+    birth_date = Column('date_naissance', DateTime, nullable=False, default=None)
+    address = Column('adresse', String(250), default=None, nullable=True)
+    gender = Column('sexe', Enum('HOMME', 'FEMME'), default=None)
 
     # Relations
 
