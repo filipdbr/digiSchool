@@ -27,39 +27,43 @@ The **student document** in MongoDB may contain nested structures that represent
 ##### NoSQL Database Model
 ```json
 {
-    "_id": "<student_id>",
-    "nom": "<student_name>",
-    "prenom": "<student_firstname>",
-    "date_naissance": "<date_of_birth>",
-    "adresse": "<address>",
-    "sexe": "<gender>",
-    "classe": {
-        "class_id": "<class_id>",
-        "nom": "<class_name>",
-        "prof": {
-            "prof_id": "<teacher_id>",
-            "nom": "<teacher_lastname>",
-            "prenom": "<teacher_firstname>"
-        }
-    },
-    "notes": [
-        {
-            "note_id": "<note_id>",
-            "matiere": {
-                "matiere_id": "<subject_id>",
-                "nom": "<subject_name>"
-            },
-            "note": "<grade_value>",
-            "date_saisie": "<date_entered>",
-            "trimestre": {
-                "trimestre_id": "<trimester_id>",
-                "nom": "<trimester_name>"
-            },
-            "avis": "<comment>",
-            "avancement": "<progress>"
-        }
-    ]
+  "student_id": "<string>",
+  "last_name": "<string>",
+  "first_name": "<string>",
+  "date_of_birth": "<datetime>",
+  "address": "<string>",
+  "gender": "<string>",
+  "student_class": {
+    "class_id": "<string>",
+    "name": "<string>",
+    "professor": {
+      "teacher_id": "<string>",
+      "last_name": "<string>",
+      "first_name": "<string>",
+      "date_of_birth": "<datetime>",
+      "address": "<string>",
+      "gender": "<string>"
+    }
+  },
+  "notes": [
+    {
+      "grade_id": "<string>",
+      "subject": {
+        "subject_id": "<string>",
+        "name": "<string>"
+      },
+      "grade_value": "<integer>",
+      "date_entered": "<datetime>",
+      "trimester": {
+        "trimester_id": "<string>",
+        "name": "<string>"
+      },
+      "comment": "<string>",
+      "progress": "<float>"
+    }
+  ]
 }
+
 ```
 
 ### Key Changes in the NoSQL Model
