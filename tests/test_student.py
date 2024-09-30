@@ -1,4 +1,4 @@
-from config.database import get_db
+from config.database_sql import get_db
 from src.models.sql.student import Student
 
 class TestStudent:

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from src.models.sql.base_model import Base
-from config.database import engine
+from config.database_sql import engine
 from src.routers import student_router
 
 Base.metadata.create_all(bind=engine)

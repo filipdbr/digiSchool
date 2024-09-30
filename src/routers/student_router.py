@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from src.controllers import student_controller
 
-from config.database import get_db
+from config.database_sql import get_db
 from src.schemas.student_schema import StudentSchema, StudentResponseSchema, StudentResponseSchema
 
 router = APIRouter(prefix="/students", tags=["students"])

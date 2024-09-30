@@ -41,7 +41,7 @@ my_app/
 │
 ├── main.py                        # Main entry point for the application
 ├── config/
-│   ├── database.py                # Database configuration (SQL and NoSQL)
+│   ├── database_sql.py                # Database configuration (SQL and NoSQL)
 │   ├── env.py                     # Environment variables management
 │   └── settings.py                # Global application settings
 │

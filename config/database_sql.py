@@ -17,7 +17,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 # Sessions created by this class will manage database transactions
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
-def get_db():
+def get_db_sql():
     """
         Provides a database session for the duration of a request.
     """
