@@ -1,6 +1,6 @@
 import unittest
 from pymongo.errors import ConnectionFailure
-from config.database_nosql import get_mongo_db
+from config.database_nosql import get_db_nosql, get_db_nosql
 
 
 class TestMongoDBConnection(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestMongoDBConnection(unittest.TestCase):
         Test if the MongoDB connection is successful using the provided environment variables.
         """
         try:
-            db = get_mongo_db()
+            db = get_db_nosql()
             # Run a simple operation to test the connection
             db.command('ping')
             self.assertTrue(True)

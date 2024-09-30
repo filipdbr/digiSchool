@@ -11,7 +11,6 @@ class Trimester(Base):
 
     id = Column(Integer, primary_key=True, name="idtrimestre")
     name = Column(String(10), name="nom")
-    date = Column(DateTime, name="date")
 
     # Relationships
 

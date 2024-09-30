@@ -1,5 +1,5 @@
 from config.database_sql import get_db
-from src.models.sql.student import Student
+from src.models.sql.student_model import Student
 
 class TestStudent:
     """

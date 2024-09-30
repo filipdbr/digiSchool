@@ -27,7 +27,7 @@ The **student document** in MongoDB may contain nested structures that represent
 ##### NoSQL Database Model
 ```json
 {
-  "student_id": "<string>",
+  "student_id": "<int>",
   "last_name": "<string>",
   "first_name": "<string>",
   "date_of_birth": "<datetime>",

@@ -54,16 +54,16 @@ my_app/
 │   ├── models/                    # Data models
 │   │   ├── sql/                   # SQLAlchemy ORM models (for migration)
 │   │   │   ├── base_model.py      # Base class for SQLAlchemy models
-│   │   │   ├── student.py         # SQL model for students
+│   │   │   ├── student_model.py         # SQL model for students
 │   │   │   ├── classe.py          # SQL model for classes
-│   │   │   ├── professor.py       # SQL model for professors
+│   │   │   ├── professor_model.py       # SQL model for professors
 │   │   │   └── notes.py           # SQL model for notes
 │   │   │
 │   │   └── nosql/                 # Data models for MongoDB (optional)
-│   │       ├── student.py         # Model representing student document structure
+│   │       ├── student_model.py         # Model representing student document structure
 │   │
 │   ├── schemas/                   # Pydantic schemas (input/output data validation)
-│   │   ├── student.py             # Schemas for student operations
+│   │   ├── student_model.py             # Schemas for student operations
 │   │   └── migration.py           # Schemas for migration (optional)
 │   │
 │   ├── routers/                   # API endpoints (user access)

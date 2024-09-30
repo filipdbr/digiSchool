@@ -19,7 +19,7 @@ client = MongoClient(mongo_url)
 mongodb = client.get_database()
 
 # Function to get the connection
-def get_mongo_db():
+def get_db_nosql():
     """
     Provides a MongoDB connection
     """
