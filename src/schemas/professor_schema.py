@@ -26,4 +26,19 @@ class ProfessorSchema(BaseModel):
     gender: Optional[str] = None
 
     class Config:
-        from_attributes = True  # Enables using instances of SQLAlchemy models directly
+        from_attributes = True # Enables using instances of SQLAlchemy models directly
+
+
+class ProfessorResponse(BaseModel):
+    """
+    Represents a professor entity for the API response. We decided to exclude some data.
+
+    Attributes:
+        professor_id (int): Unique identifier for the professor.
+        last_name (str): Last name of the professor.
+        first_name (str): First name of the professor.
+    """
+    last_name: str
+    first_name: str
+    address: str
+    gender: str
