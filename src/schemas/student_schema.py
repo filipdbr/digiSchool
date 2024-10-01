@@ -26,11 +26,11 @@ class StudentSchema(BaseModel):
     student_id: int
     last_name: str
     first_name: str
-    birth_date: datetime
+    date_of_birth: datetime
     address: Optional[str]
     gender: str
     student_class: Optional[ClassSchema] = None
     grades: List[GradeSchema] = []
 
     class Config:
-        orm_mode = True  # Enables using instances of SQLAlchemy models directly
+        from_attributes = True  # Enables using instances of SQLAlchemy models directly

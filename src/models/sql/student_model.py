@@ -19,6 +19,7 @@ class Student(Base):
     class_id = Column('classe', Integer, ForeignKey('t_classe.id'))
 
     # Relations
+
     # Many to one with class
     student_class = relationship("Class", back_populates="students")
     # One to many with grades

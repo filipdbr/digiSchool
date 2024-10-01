@@ -64,7 +64,7 @@ my_app/
 │   │
 │   ├── schemas/                   # Pydantic schemas (input/output data validation)
 │   │   ├── student_model.py             # Schemas for student operations
-│   │   └── migration.py           # Schemas for migration (optional)
+│   │   └── data_migration.py           # Schemas for migration (optional)
 │   │
 │   ├── routers/                   # API endpoints (user access)
 │   │   ├── student_router.py      # CRUD endpoints for students

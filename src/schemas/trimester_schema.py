@@ -19,4 +19,4 @@ class TrimesterSchema(BaseModel):
     name: Optional[str]
 
     class Config:
-        orm_mode = True  # Enables using instances of SQLAlchemy models directly
+        from_attributes = True  # Enables using instances of SQLAlchemy models directly

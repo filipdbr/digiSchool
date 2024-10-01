@@ -5,7 +5,7 @@ from src.schemas.grade_schema import GradeSchema
 from src.schemas.professor_schema import ProfessorSchema
 from src.schemas.subject_schema import SubjectSchema
 from src.schemas.trimester_schema import TrimesterSchema
-from src.migration.data_migration import student_to_dict
+from src.migration.student_mapper import student_to_dict
 from src.models.sql.student_model import Student
 from src.models.sql.class_model import Class
 from src.models.sql.professor_model import Professor

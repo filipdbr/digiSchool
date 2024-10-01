@@ -21,9 +21,9 @@ class ProfessorSchema(BaseModel):
     teacher_id: Optional[int] = None
     last_name: Optional[str] = None
     first_name: Optional[str] = None
-    birth_date: Optional[datetime] = None
+    date_of_birth: Optional[datetime] = None
     address: Optional[str] = None
     gender: Optional[str] = None
 
     class Config:
-        orm_mode = True  # Enables using instances of SQLAlchemy models directly
+        from_attributes = True  # Enables using instances of SQLAlchemy models directly
