@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 
-from src.models import Professor
 
 class ProfessorResponse(BaseModel):
     """
