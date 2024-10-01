@@ -31,3 +31,25 @@ class GradeSchema(BaseModel):
 
     class Config:
         from_attributes = True  # Enables using instances of SQLAlchemy models directly
+
+class GradeResponse(BaseModel):
+    """
+    Represents a grade entity for the API response, excluding the grade ID.
+
+    Attributes:
+        subject (Optional[SubjectSchema]): The subject related to the grade.
+        grade_value (Optional[int]): The value of the grade.
+        date_entered (Optional[datetime]): The date when the grade was entered.
+        trimester (Optional[TrimesterSchema]): The trimester during which the grade was given.
+        comment (Optional[str]): Any comments related to the grade.
+        progress (Optional[float]): The progress value associated with the grade.
+    """
+    subject: Optional[SubjectSchema]
+    grade_value: Optional[int]
+    date_entered: Optional[datetime]
+    trimester: Optional[TrimesterSchema]
+    comment: Optional[str]
+    progress: Optional[float]
+
+    class Config:
+        from_attributes = True  # Enables using instances of SQLAlchemy models directly

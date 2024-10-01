@@ -20,3 +20,15 @@ class TrimesterSchema(BaseModel):
 
     class Config:
         from_attributes = True  # Enables using instances of SQLAlchemy models directly
+
+class TrimesterResponse(BaseModel):
+    """
+    Represents a trimester entity for the API response, excluding the trimester ID.
+
+    Attributes:
+        name (str): Name of the trimester.
+    """
+    name: str
+
+    class Config:
+        from_attributes = True  # Enables using instances of SQLAlchemy models directly

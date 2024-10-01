@@ -20,3 +20,15 @@ class SubjectSchema(BaseModel):
 
     class Config:
         from_attributes = True  # Enables using instances of SQLAlchemy models directly
+
+class SubjectResponse(BaseModel):
+    """
+    Represents a subject entity for the API response, excluding the subject ID.
+
+    Attributes:
+        name (str): Name of the subject.
+    """
+    name: str
+
+    class Config:
+        from_attributes = True  # Enables using instances of SQLAlchemy models directly
