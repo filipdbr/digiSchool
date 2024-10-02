@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 from src.controllers.professor_controller import add_professor, find_professor_by_id, get_all_professors_controller
-from src.schemas.professor_schema import ProfessorSchema, ProfessorResponse
+from src.schemas.professor_schema import ProfessorSchema, ProfessorResponse, ProfessorAPI
 from typing import List
 
 router = APIRouter(
@@ -10,7 +10,7 @@ router = APIRouter(
 
 @router.post("/add")
 def add_professor_to_classes(
-    professor_data: ProfessorSchema,
+    professor_data: ProfessorAPI,
     class_names: List[str] = Query(..., description="List of class names to assign the professor to")
 ):
     """

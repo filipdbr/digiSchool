@@ -52,3 +52,6 @@ class StudentSchema(BaseModel):
 
 class StudentResponse(StudentSchema):
     pass
+
+class StudentAPI(StudentSchema):
+    date_of_birth: date

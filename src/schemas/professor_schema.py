@@ -56,7 +56,8 @@ class ProfessorResponse(ProfessorSchema):
 
     The same as Professor
     """
-
     classes: List[str] = []
-
     pass
+
+class ProfessorAPI(ProfessorSchema):
+    date_of_birth: Optional[date] = None

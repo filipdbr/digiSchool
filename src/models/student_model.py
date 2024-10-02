@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
-from src.models.sql.base_model import Base
+from src.models.base_model import Base
 
 class Student(Base):
     """

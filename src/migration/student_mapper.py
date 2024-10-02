@@ -1,6 +1,4 @@
-from datetime import datetime
-
-from src.models.sql.student_model import Student
+from src.models.student_model import Student
 from src.schemas.class_schema import ClassSchema
 from src.schemas.grade_schema import GradeSchema
 from src.schemas.professor_schema import ProfessorSchema

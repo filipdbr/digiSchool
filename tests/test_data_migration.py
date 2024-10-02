@@ -1,17 +1,11 @@
-import pytest
 from datetime import datetime
-from src.schemas.class_schema import ClassSchema
-from src.schemas.grade_schema import GradeSchema
-from src.schemas.professor_schema import ProfessorSchema
-from src.schemas.subject_schema import SubjectSchema
-from src.schemas.trimester_schema import TrimesterSchema
 from src.migration.student_mapper import student_to_dict
-from src.models.sql.student_model import Student
-from src.models.sql.class_model import Class
-from src.models.sql.professor_model import Professor
-from src.models.sql.grade_model import Grade
-from src.models.sql.subject_model import Subject
-from src.models.sql.trimester_model import Trimester
+from src.models.student_model import Student
+from src.models.class_model import Class
+from src.models.professor_model import Professor
+from src.models.grade_model import Grade
+from src.models.subject_model import Subject
+from src.models.trimester_model import Trimester
 
 
 

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_serializer
+from pydantic import BaseModel, field_serializer, field_validator
 from typing import List, Optional
 from datetime import datetime, date
 from src.schemas.subject_schema import SubjectSchema
@@ -38,3 +38,6 @@ class GradeSchema(BaseModel):
 
 class GradeResponse(GradeSchema):
     pass
+
+class GradeAPI(GradeSchema):
+    date_entered: Optional[date]

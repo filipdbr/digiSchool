@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from pymongo import MongoClient
 from utils.database_sql import get_db_sql
 from utils.database_nosql import get_db_nosql
-from src.models.sql.student_model import Student
+from src.models.student_model import Student
 from src.migration.student_mapper import student_to_dict
 
 

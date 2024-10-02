@@ -1,5 +1,5 @@
 from utils.database_sql import get_db
-from src.models.sql.student_model import Student
+from src.models.student_model import Student
 
 class TestStudent:
     """

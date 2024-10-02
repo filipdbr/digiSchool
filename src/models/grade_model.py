@@ -1,9 +1,6 @@
 from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from src.models.sql.base_model import Base
-from src.models.sql.trimester_model import Trimester
-from src.models.sql.subject_model import Subject
-from src.models.sql.professor_model import Professor
+from src.models.base_model import Base
 
 
 class Grade(Base):

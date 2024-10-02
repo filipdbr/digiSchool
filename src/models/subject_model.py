@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
 
-from src.models.sql.base_model import Base
+from src.models.base_model import Base
 
 
 class Subject(Base):
