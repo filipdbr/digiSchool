@@ -59,3 +59,24 @@ def validate_professor(professor_data: ProfessorSchema, class_names: List[str]):
                 status_code=404,
                 detail=f"Class '{class_name}' doesn't exist. Existing classes: {', '.join(existing_class_names_list)}."
             )
+
+def validate_professor_duplicates(professor_data: ProfessorSchema):
+    """
+    Validates if a professor with the given name and surname already exists in the database.
+    """
+    # Connect to the MongoDB collection
+    db = get_db_nosql()
+    students_coll = db['students']
+
+    # Check if a professor with the same first name and last name already exists
+    existing_professor = students_coll.find_one({
+        "student_class.professor.last_name": professor_data.last_name.strip().upper(),
+        "student_class.professor.first_name": professor_data.first_name.strip().capitalize()
+    })
+
+    # Raise an exception if a professor with the same first name and last name already exists
+    if existing_professor:
+        raise HTTPException(
+            status_code=400,
+            detail=f"A professor with the name '{professor_data.first_name} {professor_data.last_name}' already exists in the database."
+        )

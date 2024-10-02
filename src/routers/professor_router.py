@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query, Path, Body
 from src.controllers.professor_controller import add_professor, find_professor_by_id, get_all_professors_controller, \
-    update_professor_controller
+    update_professor_controller, patch_professor_controller
 from src.schemas.professor_schema import ProfessorResponse, ProfessorAPI, ProfessorUpdateSchema
 from typing import List
 
@@ -45,7 +45,7 @@ async def view_all_professors() -> list[ProfessorResponse]:
     """
     return get_all_professors_controller()
 
-@router.patch("/professors/{professor_id}")
+@router.patch("/update/details/{professor_id}")
 async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema):
     """
     Update details of a professor.
@@ -53,7 +53,7 @@ async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema
     Please provide one or more fields to be updated.
     """
     try:
-        updated_professor = update_professor_controller(professor_id, update_data)
+        updated_professor = patch_professor_controller(professor_id, update_data)
         return {
             "message": f"Professor ID: {professor_id} updated successfully.",
             "updated_professor": updated_professor
@@ -62,4 +62,21 @@ async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema
         raise HTTPException(status_code=404, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.put("/update/{professor_id}")
+async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema):
+    """
+    Update all thew details of a professor.
+
+    The change of all details, you have to provide all fields
+    """
+    try:
+        # Call the controller function to update the professor details
+        result_message = update_professor_controller(professor_id, update_data)
+        return {"message": result_message}
+    except HTTPException as http_exc:
+        raise http_exc
+    except Exception as e:
+        # In case of unexpected error
+        raise HTTPException(status_code=500, detail=str(e))
 

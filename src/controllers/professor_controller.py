@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from pymongo.collection import Collection
 
 from src.models import Professor
-from src.services.professor_service import validate_professor
+from src.services.professor_service import validate_professor, validate_duplicates, validate_professor_duplicates
 from utils.database_nosql import get_db_nosql
 from src.schemas.professor_schema import ProfessorResponse, ProfessorSchema, ProfessorUpdateSchema
 
@@ -142,7 +142,7 @@ def get_all_professors_controller() -> List[ProfessorResponse]:
 
 # 3. Update method
 
-def update_professor_controller(professor_id: int, update_data: ProfessorUpdateSchema) -> dict:
+def patch_professor_controller(professor_id: int, update_data: ProfessorUpdateSchema) -> dict:
     """
     Updates professor details (excluding 'teacher_id' and 'classes') in all student records.
     Returns the updated professor details.
@@ -183,6 +183,47 @@ def update_professor_controller(professor_id: int, update_data: ProfessorUpdateS
         return updated_prof["student_class"]["professor"]
     else:
         raise ValueError(f"Professor with ID {professor_id} not found.")
+
+def update_professor_controller(professor_id: int, update_data: ProfessorUpdateSchema) -> str:
+    """
+    Updates professor details (excluding 'teacher_id' and 'classes') in all student records.
+    """
+    # Duplicates validation
+    validate_professor_duplicates(professor_data=update_data)
+
+    # Connect to the database
+    db = get_db_nosql()
+    students_coll = db['students']
+
+    # Find the professor in student records and update the details
+    prof_filter = {"student_class.professor.teacher_id": professor_id}
+
+    # Create update values with all provided data
+    update_values = {
+        "student_class.professor.last_name": update_data.last_name.strip().title() if update_data.last_name else None,
+        "student_class.professor.first_name": update_data.first_name.strip().title() if update_data.first_name else None,
+        "student_class.professor.date_of_birth": update_data.date_of_birth,
+        "student_class.professor.address": update_data.address.strip().capitalize() if update_data.address else None,
+        "student_class.professor.gender": update_data.gender.strip().upper() if update_data.gender else None,
+    }
+
+    # Remove fields that are None to avoid overwriting existing data with null values
+    update_values = {key: value for key, value in update_values.items() if value is not None}
+
+    # Perform the update
+    if update_values:
+        result = students_coll.update_many(prof_filter, {"$set": update_values})
+
+        # Check if any document was modified
+        if result.modified_count == 0:
+            raise HTTPException(status_code=404, detail=f"No professor found with ID {professor_id} to update.")
+
+    return f"Professor ID {professor_id} updated successfully."
+
+
+
+
+
 
 
 
