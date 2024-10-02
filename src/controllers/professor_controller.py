@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from pymongo.collection import Collection
 
 from src.models import Professor
+from src.services.professor_service import validate_professor
 from utils.database_nosql import get_db_nosql
 from src.schemas.professor_schema import ProfessorResponse, ProfessorSchema
 
@@ -14,7 +15,8 @@ from src.schemas.professor_schema import ProfessorResponse, ProfessorSchema
 
 def add_professor(professor_data: ProfessorSchema, class_names: List[str]):
 
-    # todo validation - there are duplicates
+    # Professor validation
+    validate_professor(professor_data, class_names)
 
     # Connect to the database and collections
     db = get_db_nosql()
@@ -42,37 +44,55 @@ def add_professor(professor_data: ProfessorSchema, class_names: List[str]):
     if total_updated == 0:
         raise ValueError(f"No students found in any of the specified classes. Professor not added.")
 
-    return f"Assigned new professor to a total of {total_updated} students in classes {', '.join(class_names).upper()}."
+    return f"Assigned new professor to a total of {total_updated} students in class(es) {', '.join(class_names).upper()}."
 
 # 2. Read methods
 
 def find_professor_by_id(id_prof: int) -> ProfessorResponse:
     """
-    Find professor by ID.
+    Find professor by ID along with their assigned classes.
     """
     # Connect to DB
     db = get_db_nosql()
     students_coll = db['students']
 
-    # Search professor by teacher_id
-    professor_data = students_coll.find_one({"student_class.professor.teacher_id": id_prof})
+    # Retrieve all students where the professor has the given teacher_id
+    students_with_professor = students_coll.find({"student_class.professor.teacher_id": id_prof})
 
-    # Raise error if not found
-    if professor_data is None:
+    # Initialize variables to store professor data and their assigned classes
+    professor_info = None
+    classes = []
+
+    # Iterate over all students with the given professor ID to collect data and classes
+    for student in students_with_professor:
+        student_class = student.get("student_class", {})
+        professor = student_class.get("professor", {})
+
+        # Set professor_info from the first occurrence
+        if not professor_info:
+            professor_info = professor
+
+        # Collect class names for the professor
+        class_name = student_class.get("name")
+        if class_name and class_name not in classes:
+            classes.append(class_name)
+
+    # Raise error if no professor data found
+    if professor_info is None:
         raise HTTPException(status_code=404, detail=f"No professor with id {id_prof} found.")
 
-    # Get professor info
-    professor_info = professor_data.get("student_class", {}).get("professor", {})
-
-    # Create response object
-    professor = ProfessorResponse(**professor_info)
+    # Create response object with professor information and assigned classes
+    professor = ProfessorResponse(
+        **professor_info,
+        classes=classes
+    )
 
     return professor
 
 
 def get_all_professors_controller() -> List[ProfessorResponse]:
     """
-    Retrieve all professors.
+    Retrieve all professors along with their assigned classes.
     """
     # Connect to DB
     db = get_db_nosql()
@@ -81,26 +101,44 @@ def get_all_professors_controller() -> List[ProfessorResponse]:
     # Retrieve all students
     students = students_coll.find()
 
-    # Track existing professors using a set of unique IDs
-    existing_professors = set()
-    professors_list = []
+    # Track existing professors using a dictionary to collect their classes
+    existing_professors = {}
 
-    # Iterate through all students to collect unique professors
+    # Iterate through all students to collect unique professors and their classes
     for student in students:
-        professor = student.get("student_class", {}).get("professor", {})
+        student_class = student.get("student_class", {})
+        professor = student_class.get("professor", {})
 
         # Ensure professor data is present
         if professor and professor.get("teacher_id"):
             prof_id = professor["teacher_id"]
+            class_name = student_class.get("name")
 
-            # Add to set if not already added
-            if prof_id not in existing_professors:
-                existing_professors.add(prof_id)
+            # If professor is already tracked, add the class to their list of classes
+            if prof_id in existing_professors:
+                if class_name and class_name not in existing_professors[prof_id]["classes"]:
+                    existing_professors[prof_id]["classes"].append(class_name)
+            else:
+                # Track new professor and initialize their classes list
+                existing_professors[prof_id] = {
+                    "professor_data": professor,
+                    "classes": [class_name] if class_name else []
+                }
 
-                # Create a ProfessorResponse object
-                professor_obj = ProfessorResponse(**professor)
-                professors_list.append(professor_obj)
+    # Create a list of ProfessorResponse objects
+    professors_list = []
+    for prof_id, prof_info in existing_professors.items():
+        professor_data = prof_info["professor_data"]
+        classes = prof_info["classes"]
+
+        # Create a ProfessorResponse object and add classes
+        professor_obj = ProfessorResponse(
+            **professor_data,
+            classes=classes
+        )
+        professors_list.append(professor_obj)
 
     return professors_list
+
 
 
