@@ -56,7 +56,7 @@ student_validator = {
                     "professor": {
                         "bsonType": "object",
                         "properties": {
-                            "professor_id": {
+                            "teacher_id": {
                                 "bsonType": "int",
                                 "description": "must be an integer"
                             },
