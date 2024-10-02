@@ -1,4 +1,4 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, field_serializer
 from typing import List, Optional
 from datetime import datetime, date
 
@@ -21,6 +21,10 @@ class ProfessorSchema(BaseModel):
     gender: str
     date_of_birth: Optional[datetime] = None
 
+    @field_serializer('date_of_birth')
+    def serialize_date_of_birth(self, value):
+        return value.strftime('%Y-%m-%d')
+
     # Validator for formatting last_name to uppercase
     @field_validator("last_name", mode='before')
     def format_last_name(cls, value: str) -> str:
@@ -40,18 +44,6 @@ class ProfessorSchema(BaseModel):
     @field_validator("gender", mode='before')
     def format_gender(cls, value: str) -> str:
         return value.strip().upper() if value else value
-
-    # Validator for casting date_of_birth to a date object if possible
-    @field_validator("date_of_birth", mode='before')
-    def cast_date_of_birth(cls, value) -> Optional[date]:
-        if isinstance(value, datetime):
-            return value.date()
-        elif isinstance(value, str):
-            try:
-                return datetime.strptime(value, "%Y-%m-%d").date()
-            except ValueError:
-                raise ValueError("Invalid date format. Expected format: YYYY-MM-DD.")
-        return value
 
     class Config:
         from_attributes = True  # Enables using instances of SQLAlchemy models directly

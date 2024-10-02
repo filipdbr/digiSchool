@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.models.sql.student_model import Student
 from src.schemas.class_schema import ClassSchema
 from src.schemas.grade_schema import GradeSchema
@@ -12,7 +14,7 @@ def student_to_dict(student: Student) -> dict:
         student_id=student.student_id,
         last_name=student.last_name,
         first_name=student.first_name,
-        date_of_birth=student.birth_date,
+        date_of_birth=student.birth_date.strftime('%Y-%m-%d'),
         address=student.address,
         gender=student.gender,
         student_class=ClassSchema(
@@ -22,7 +24,7 @@ def student_to_dict(student: Student) -> dict:
                 teacher_id=student.student_class.professor.teacher_id,
                 last_name=student.student_class.professor.last_name,
                 first_name=student.student_class.professor.first_name,
-                date_of_birth=student.student_class.professor.birth_date,
+                date_of_birth=student.student_class.professor.birth_date.strftime('%Y-%m-%d'),
                 address=student.student_class.professor.address,
                 gender=student.student_class.professor.gender
             ) if student.student_class.professor else None
@@ -35,7 +37,7 @@ def student_to_dict(student: Student) -> dict:
                     name=grade.subject.name
                 ) if grade.subject else None,
                 grade_value=grade.grade_value,
-                date_entered=grade.date_entered,
+                date_entered=grade.date_entered.strftime('%Y-%m-%d') if grade.date_entered else None,
                 trimester=TrimesterSchema(
                     trimester_id=grade.trimester.trimester_id,
                     name=grade.trimester.name

@@ -31,7 +31,7 @@ student_validator = {
                 "description": "must be a string and is required"
             },
             "date_of_birth": {
-                "bsonType": "date",
+                "bsonType": "string",
                 "description": "must be a date and is required"
             },
             "address": {
@@ -67,6 +67,18 @@ student_validator = {
                             "first_name": {
                                 "bsonType": "string",
                                 "description": "must be a string"
+                            },
+                            "date_of_birth": {
+                                "bsonType": "string",
+                                "description": "must be a date and is required"
+                            },
+                            "address": {
+                                "bsonType": "string",
+                                "description": "must be a string"
+                            },
+                            "gender": {
+                                "enum": ["HOMME", "FEMME"],
+                                "description": "must be either HOMME or FEMME and is required"
                             }
                         }
                     }
@@ -99,7 +111,7 @@ student_validator = {
                             "description": "must be an integer"
                         },
                         "date_entered": {
-                            "bsonType": "date",
+                            "bsonType": "string",
                             "description": "must be a date"
                         },
                         "trimester": {

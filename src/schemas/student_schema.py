@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator, field_serializer
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, date
 
 from src.schemas.class_schema import ClassSchema
 from src.schemas.grade_schema import GradeSchema, GradeResponse
@@ -30,6 +30,22 @@ class StudentSchema(BaseModel):
     gender: str
     student_class: Optional[ClassSchema] = None
     grades: List[GradeSchema] = []
+
+    @field_serializer('date_of_birth')
+    def serialize_date_of_birth(self, value):
+        return value.strftime('%Y-%m-%d')
+
+    # Validator dla date_of_birth, aby upewnić się, że data jest odpowiednio przekształcona
+    @field_validator("date_of_birth", mode='before')
+    def validate_date_of_birth(cls, value) -> date:
+        if isinstance(value, datetime):
+            return value.date()  # datetime to date
+        elif isinstance(value, str):
+            try:
+                return datetime.strptime(value, "%Y-%m-%d").date()
+            except ValueError:
+                raise ValueError("Invalid date format. Expected format: YYYY-MM-DD.")
+        return value
 
     class Config:
         from_attributes = True  # Enables using instances of SQLAlchemy models directly
