@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Query, Path, Body
+from fastapi import APIRouter, HTTPException, Query
 from src.controllers.professor_controller import add_professor, find_professor_by_id, get_all_professors_controller, \
-    update_professor_controller, patch_professor_controller
+    update_professor_controller, patch_professor_controller, delete_professor_controller
 from src.schemas.professor_schema import ProfessorResponse, ProfessorAPI, ProfessorUpdateSchema
 from typing import List
 
@@ -64,7 +64,7 @@ async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.put("/update/{professor_id}")
-async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema):
+async def update_completely(professor_id: int, update_data: ProfessorUpdateSchema):
     """
     Update all thew details of a professor.
 
@@ -80,3 +80,17 @@ async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema
         # In case of unexpected error
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.delete("/delete/{professor_id}")
+async def delete_professor(professor_id: int):
+    """
+    Delete a professor by their ID.
+
+    This action will remove the professor completely from the database.
+    """
+    try:
+        delete_message = delete_professor_controller(professor_id)
+        return {"message": delete_message}
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -1,10 +1,6 @@
 from typing import List
-
 from fastapi import HTTPException
-from pymongo.collection import Collection
-
-from src.models import Professor
-from src.services.professor_service import validate_professor, validate_duplicates, validate_professor_duplicates
+from src.services.professor_service import validate_professor, validate_professor_duplicates
 from utils.database_nosql import get_db_nosql
 from src.schemas.professor_schema import ProfessorResponse, ProfessorSchema, ProfessorUpdateSchema
 
@@ -14,6 +10,13 @@ from src.schemas.professor_schema import ProfessorResponse, ProfessorSchema, Pro
 # 1. Create methods
 
 def add_professor(professor_data: ProfessorSchema, class_names: List[str]):
+    """
+    Add professor the class or classes. Will be used for PUT endpoint.
+
+    Which is important, is that in the app cannot exist a teacher without a class. Hence if we want to create a new teacher,
+    we need to either replace a current teacher which teaching a class (in the school), or create a new students class.
+    One of the assumptions is that there is no teacher without a students' class attached.
+    """
 
     # Professor validation
     validate_professor(professor_data, class_names)
@@ -50,7 +53,7 @@ def add_professor(professor_data: ProfessorSchema, class_names: List[str]):
 
 def find_professor_by_id(id_prof: int) -> ProfessorResponse:
     """
-    Find professor by ID along with their assigned classes.
+    Find professor by ID along with their assigned classes. Will be used for GET endpoint.
     """
     # Connect to DB
     db = get_db_nosql()
@@ -151,6 +154,9 @@ def patch_professor_controller(professor_id: int, update_data: ProfessorUpdateSc
     db = get_db_nosql()
     students_coll = db['students']
 
+    # Duplicates validation
+    validate_professor_duplicates(professor_data=update_data)
+
     # Find the professor in student records and update the details
     prof = {"student_class.professor.teacher_id": professor_id}
 
@@ -221,6 +227,41 @@ def update_professor_controller(professor_id: int, update_data: ProfessorUpdateS
     return f"Professor ID {professor_id} updated successfully."
 
 
+def delete_professor_controller(professor_id: int) -> str:
+    """
+    Delete a professor by their ID.
+
+    Removes professor details from all students' records where they are assigned.
+    """
+    # Connect to the database
+    db = get_db_nosql()
+    students_coll = db['students']
+
+    # Find the professor in student records
+    prof_filter = {"student_class.professor.teacher_id": professor_id}
+
+    # Perform the update to remove the professor details
+    update_result = students_coll.update_many(
+        prof_filter,
+        {"$unset": {"student_class.professor": ""}}
+    )
+
+    # Check if any document was modified
+    if update_result.modified_count == 0:
+        raise HTTPException(status_code=404, detail=f"No professor found with ID {professor_id} to delete.")
+
+    # Check for classes without a professor assigned
+    classes_without_professor = students_coll.distinct("student_class.name",
+                                                       {"student_class.professor": {"$exists": False}})
+
+    # Create the return message
+    message = f"Professor ID {professor_id} deleted successfully from {update_result.modified_count} student records."
+
+    if classes_without_professor:
+        classes_list = ', '.join(classes_without_professor)
+        message += f" Note: The following classes do not have a professor assigned: {classes_list}."
+
+    return message
 
 
 
