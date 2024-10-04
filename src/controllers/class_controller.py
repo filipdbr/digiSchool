@@ -108,7 +108,6 @@ def get_all_classes_with_students() -> List[Dict]:
         print(f"Error fetching classes with students: {e}")  # Log error message
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-
 def get_students_by_class_id(class_id: int) -> Dict:
     db = get_db_nosql()
     students_coll = db['students']
@@ -120,6 +119,7 @@ def get_students_by_class_id(class_id: int) -> Dict:
         if not students:
             raise HTTPException(status_code=404, detail=f"No class found with ID '{class_id}' or no students.")
 
+        # Retrieve class info from the first student
         first_student = students[0]
         student_class = first_student.get('student_class', {})
 
@@ -140,12 +140,17 @@ def get_students_by_class_id(class_id: int) -> Dict:
                 }
                 unique_students[student_id] = student_data
 
+        # Add unique students to class_data
         class_data["students"] = list(unique_students.values())  # Assign unique students
+
         return class_data
+
     except HTTPException as he:
+        # Properly propagate HTTP exceptions
         raise he
     except Exception as e:
-        print(f"Error fetching students by class_id: {e}")  # Log error message
+        # Log and re-raise an HTTP 500 error if there's another type of exception
+        print(f"Error fetching students by class_id: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 

@@ -29,21 +29,20 @@ def get_students():
         print(f"Error in endpoint retrieve_all_classes: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-@router.get("/id/{class_id}/students", response_model=Dict)
-def get_students_by_class_id(class_id: int):
-    """
-    TP: Récupérer la liste des élèves selon le choix d’une classe
+from fastapi import FastAPI, HTTPException
 
-    Get all students per class by class ID.
-    """
+@router.get("/classes/id/{class_id}/students")
+def retrieve_students_by_class_id(class_id: int):
     try:
-        data = get_students_by_class_id(class_id)
-        return data
+        return get_students_by_class_id(class_id)
     except HTTPException as he:
+        # Properly propagate HTTP exceptions
         raise he
     except Exception as e:
+        # Log the error and raise an HTTP 500 error
         print(f"Error in endpoint retrieve_students_by_class_id: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
 
 @router.get("/name/{class_name}/students", response_model=Dict)
 def retrieve_students_by_class_name(class_name: str):
