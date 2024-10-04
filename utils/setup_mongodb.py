@@ -84,7 +84,7 @@ student_validator = {
                     }
                 }
             },
-            "notes": {
+            "grades": {
                 "bsonType": "array",
                 "items": {
                     "bsonType": "object",

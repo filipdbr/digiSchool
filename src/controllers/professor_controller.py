@@ -1,5 +1,9 @@
-from typing import List
+from typing import List, Dict
 from fastapi import HTTPException
+from sqlalchemy.orm import joinedload
+
+from src.models import Professor, Class, Student
+from src.schemas.student_schema import StudentSchema
 from src.services.professor_service import validate_professor, validate_professor_duplicates
 from utils.database_nosql import get_db_nosql
 from src.schemas.professor_schema import ProfessorResponse, ProfessorSchema, ProfessorUpdateSchema
@@ -65,11 +69,13 @@ def find_professor_by_id(id_prof: int) -> ProfessorResponse:
     # Initialize variables to store professor data and their assigned classes
     professor_info = None
     classes = []
+    grades = []
 
     # Iterate over all students with the given professor ID to collect data and classes
     for student in students_with_professor:
         student_class = student.get("student_class", {})
         professor = student_class.get("professor", {})
+        grade = student.get("grade", {})
 
         # Set professor_info from the first occurrence
         if not professor_info:
@@ -79,6 +85,8 @@ def find_professor_by_id(id_prof: int) -> ProfessorResponse:
         class_name = student_class.get("name")
         if class_name and class_name not in classes:
             classes.append(class_name)
+
+        grade
 
     # Raise error if no professor data found
     if professor_info is None:
@@ -263,8 +271,79 @@ def delete_professor_controller(professor_id: int) -> str:
 
     return message
 
+# TP Récupérer les élèves et leur note selon un professeur
+def get_professors_with_students_and_grades_by_id(professor_id: int) -> List[dict]:
+    """
+    TP: Récupérer les élèves et leur note selon un professeur
 
+    Get the list of students with notes by professor ID.
 
+    Comment: We provide user with partial inforation, which are interesting for the user. There is an option to add more data/info.
+    """
+    # Connect to DB
+    db = get_db_nosql()
+    students_coll = db['students']
 
+    try:
+        # find all students of the prof in mongoDB
+        query = {"student_class.professor.teacher_id": professor_id}
+        students_cursor = students_coll.find(query)
+
+        # check if found
+        students = list(students_cursor)
+        if not students:
+            raise HTTPException(status_code=404, detail=f"No students found for professor with ID {professor_id}.")
+
+        # collect the proff data from the first student
+        first_student = students[0]
+        professor = first_student.get('student_class', {}).get('professor', {})
+        if not professor:
+            raise HTTPException(status_code=404, detail=f"No professor data found for professor with ID {professor_id}.")
+
+        # result dictionary initialisation
+        result = {
+            "teacher_id": professor.get("teacher_id"),
+            "last_name": professor.get("last_name"),
+            "first_name": professor.get("first_name"),
+            "students": []
+        }
+
+        # Dictionary to avoid duplicates
+        unique_students = {}
+
+        for student in students:
+            student_id = student.get("student_id")
+            if student_id not in unique_students:
+                # Pobierz dane ucznia
+                student_data = {
+                    "student_id": student_id,
+                    "last_name": student.get("last_name"),
+                    "first_name": student.get("first_name"),
+                    "grades": []
+                }
+
+                # get grades
+                notes = student.get("grades", [])
+                for grade in notes:
+                    grade_data = {
+                        "grade_value": grade.get("grade_value"),
+                        "subject_name": grade.get("subject", {}).get("name", ""),
+                        "trimester_name": grade.get("trimester", {}).get("name", "")
+                    }
+                    student_data["grades"].append(grade_data)
+
+                # add a student to a dictionary of unique students
+                unique_students[student_id] = student_data
+
+        # add this list to the result
+        result["students"] = list(unique_students.values())
+
+        return result
+
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        print(f"Error fetching students by professor: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 

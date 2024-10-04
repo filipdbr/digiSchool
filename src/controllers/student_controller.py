@@ -1,5 +1,5 @@
 from src.schemas.grade_schema import GradeSchema
-from typing import List, Optional
+from typing import List, Optional, Dict
 from src.schemas.student_schema import StudentSchema, StudentPatch, StudentResponse, StudentCreateSchema
 from utils.database_nosql import get_db_nosql
 
@@ -42,6 +42,47 @@ def create_student_controller(student: StudentCreateSchema) -> StudentResponse:
 def get_all_students_controller():
     students = students_coll.find()
     return [StudentResponse(**student) for student in students]
+
+def get_all_students_with_grades_controller() -> List[Dict]:
+    try:
+
+        students_cursor = students_coll.find()
+        students = list(students_cursor)
+
+
+        simplified_students = []
+        for student in students:
+
+            student.pop('_id', None)
+
+
+            simplified_student = {
+                "student_id": student.get("student_id"),
+                "last_name": student.get("last_name"),
+                "first_name": student.get("first_name"),
+                "professor_first_name": student.get("student_class", {}).get("professor", {}).get("first_name"),
+                "professor_last_name": student.get("student_class", {}).get("professor", {}).get("last_name"),
+                "class_name": student.get("student_class", {}).get("name"),
+                "grades": []
+            }
+
+
+            grades = student.get("grades", [])
+            for grade in grades:
+                simplified_grade = {
+                    "grade_value": grade.get("grade_value"),
+                    "subject_name": grade.get("subject", {}).get("name"),
+                    "trimester_name": grade.get("trimester", {}).get("name")
+                }
+                simplified_student["grades"].append(simplified_grade)
+
+            simplified_students.append(simplified_student)
+
+        return simplified_students
+    except Exception as e:
+
+        print(f"Error fetching students: {e}")
+        return []
 
 # get by id
 def get_student_by_id_controller(student_id: int) -> Optional[StudentResponse]:

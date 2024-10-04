@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, Query
 from src.controllers.professor_controller import add_professor, find_professor_by_id, get_all_professors_controller, \
-    update_professor_controller, patch_professor_controller, delete_professor_controller
+    update_professor_controller, patch_professor_controller, delete_professor_controller, \
+    get_professors_with_students_and_grades_by_id
 from src.schemas.professor_schema import ProfessorResponse, ProfessorAPI, ProfessorUpdateSchema
-from typing import List
+from typing import List, Dict
 
 router = APIRouter(
     prefix="/professors",
@@ -45,6 +46,24 @@ async def view_all_professors() -> list[ProfessorResponse]:
     """
     return get_all_professors_controller()
 
+@router.get("/{professor_id}/students", response_model=Dict)
+def get_students_with_grades_by_professor(professor_id: int):
+    """
+    TP: Récupérer les élèves et leur note selon un professeur
+
+    Get the list of students with notes by professor ID.
+
+    Comment: We provide user with partial inforation, which are interesting for the user. There is an option to add more data/info.
+    """
+    try:
+        data = get_professors_with_students_and_grades_by_id(professor_id)
+        return data
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        print(f"Error in endpoint: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
 @router.patch("/update/details/{professor_id}")
 async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema):
     """
@@ -62,6 +81,7 @@ async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema
         raise HTTPException(status_code=404, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
 
 @router.put("/update/{professor_id}")
 async def update_completely(professor_id: int, update_data: ProfessorUpdateSchema):

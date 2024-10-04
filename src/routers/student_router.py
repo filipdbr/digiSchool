@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, Query
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
 
-from src.controllers.student_controller import get_all_students_controller, get_notes_by_id_controller
+from src.controllers.student_controller import get_all_students_controller, get_notes_by_id_controller, \
+    get_all_students_with_grades_controller
 from src.schemas.student_schema import StudentSchema, StudentPatch, StudentResponse, StudentCreateSchema
 from src.schemas.grade_schema import GradeSchema
 from src.controllers import create_student_controller, get_student_by_id_controller, \
@@ -23,6 +24,16 @@ async def see_all_students():
     View all students
     """
     return get_all_students_controller()
+
+@router.get("/get/all/grades", response_model=Dict)
+async def see_all_students_with_grades():
+    """
+    Showing basic info of the student + info of the grades
+    """
+    students = get_all_students_with_grades_controller()
+    if not students:
+        raise HTTPException(status_code=404, detail="Didin't find any students")
+    return students
 
 @router.get("/get/id/{student_id}", response_model=Union[StudentResponse, str])
 async def find_student_by_id(student_id: int):
@@ -53,6 +64,8 @@ async def find_student_by_last_name(last_name: str):
 @router.get("/grades/by/name/{last_name}", response_model=List[GradeSchema])
 async def get_grades_by_last_name(last_name: str):
     """
+    TP: Récupérer les notes d 'un élève (ici par le nom d 'un élève)
+
     Get student grades by last name.
     """
     grades = get_notes_controller(last_name)
@@ -62,8 +75,10 @@ async def get_grades_by_last_name(last_name: str):
 
 # GET NOTES by ID
 @router.get("/grades/by/id/{student_id}", response_model=List[GradeSchema])
-async def get_grades_by_id_controller(student_id: int):
+async def get_grades_by_id(student_id: int):
     """
+    TP: Récupérer les notes d 'un élève (ici par ID)
+
     Get student grades by ID
     """
     grades = get_notes_by_id_controller(student_id)
