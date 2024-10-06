@@ -37,7 +37,7 @@ async def read_root():
         <title>Welcome to DigiSchool</title>
     </head>
     <body>
-        <h1>Welcome to DigiSchool FastAPI App</h1>
+        <h1>Welcome to DigiSchool FastAPI App by Filip et Marwa</h1>
         <p>To explore and test the API endpoints, visit <a href="/docs">/docs</a>.</p>
     </body>
     </html>
