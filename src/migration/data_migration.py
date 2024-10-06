@@ -5,7 +5,6 @@ from utils.database_nosql import get_db_nosql
 from src.models.student_model import Student
 from src.migration.student_mapper import student_to_dict
 
-
 def migrate_students():
     # Get the SQL and MongoDB connections
     sql_session: Session = next(get_db_sql())
@@ -22,7 +21,13 @@ def migrate_students():
             # Transform SQL data to the MongoDB schema format
             student_data = student_to_dict(student)
 
-            # Insert transformed data into MongoDB
+            # Check if student already exists in MongoDB
+            existing_student = students_collection.find_one({"student_id": student_data["student_id"]})
+            if existing_student:
+                print(f"Student with ID: {student_data['student_id']} already exists. Skipping insertion.")
+                continue
+
+            # Insert transformed data into MongoDB if it doesn't already exist
             try:
                 students_collection.insert_one(student_data)
                 print(f"Inserted student with ID: {student_data['student_id']}")
@@ -35,7 +40,6 @@ def migrate_students():
     finally:
         # Close the SQL session
         sql_session.close()
-
 
 if __name__ == "__main__":
     migrate_students()
