@@ -37,55 +37,59 @@ python run.py
 Find the structure of the project below:
 
 ```bash
-my_app/
-│
-├── main.py                        # Main entry point for the application
-├── utils/
-│   ├── database_sql.py                # Database configuration (SQL and NoSQL)
-│   ├── env.py                     # Environment variables management
-│   └── settings.py                # Global application settings
-│
-├── src/
-│   ├── controllers/               # Business logic (CRUD operations and migration)
-│   │   ├── student_controller.py  # CRUD operations for student data
-│   │   ├── notes_controller.py    # CRUD operations for notes
-│   │   └── migration_controller.py# Migration from SQL to MongoDB
-│   │
-│   ├── models/                    # Data models
-│   │   ├── sql/                   # SQLAlchemy ORM models (for migration)
-│   │   │   ├── base_model.py      # Base class for SQLAlchemy models
-│   │   │   ├── student_model.py         # SQL model for students
-│   │   │   ├── classe.py          # SQL model for classes
-│   │   │   ├── professor_model.py       # SQL model for professors
-│   │   │   └── notes.py           # SQL model for notes
-│   │   │
-│   │   └── nosql/                 # Data models for MongoDB (optional)
-│   │       ├── student_model.py         # Model representing student document structure
-│   │
-│   ├── schemas/                   # Pydantic schemas (input/output data validation)
-│   │   ├── student_model.py             # Schemas for student operations
-│   │   └── data_migration.py           # Schemas for migration (optional)
-│   │
-│   ├── routers/                   # API endpoints (user access)
-│   │   ├── student_router.py      # CRUD endpoints for students
-│   │   └── migration_router.py    # Endpoints for data migration
-│   │
-│   ├── services/                  # Intermediate logic for interacting with NoSQL database (optional)
-│   │   ├── student_service.py     # Service for student operations (MongoDB)
-│   │
-│   └── utils/                     # Utility tools
-│       └── db_utils.py            # Helper functions for database operations
-│
-└── tests/                         # Unit and integration tests
-    ├── unit/                      # Unit tests for controllers, services, and routers
-    │   ├── test_student.py
-    │
-    └── integration/               # Integration tests (migration, complete data flow)
-        ├── test_data_migration.py
-        └── test_student_integration.py
+digiSchool
+├── docs
+│   ├── cahier_de_charges.pdf
+│   ├── data_model_sql.png
+│   └── migration_sql_to_nosql.md
+├── src
+│   ├── controllers
+│   │   ├── class_controller.py
+│   │   ├── grade_controller.py
+│   │   ├── professor_controller.py
+│   │   ├── student_controller.py
+│   │   ├── subject_controller.py
+│   │   └── trimester_controller.py
+│   ├── migration
+│   │   ├── data_migration.py
+│   │   └── student_mapper.py
+│   ├── models
+│   │   ├── base_model.py
+│   │   ├── class_model.py
+│   │   ├── grade_model.py
+│   │   ├── professor_model.py
+│   │   ├── student_model.py
+│   │   ├── subject_model.py
+│   │   └── trimester_model.py
+│   ├── routers
+│   │   ├── class_router.py
+│   │   ├── grade_router.py
+│   │   ├── professor_router.py
+│   │   ├── student_router.py
+│   │   ├── subject_router.py
+│   │   └── trimester_router.py
+│   ├── schemas
+│   │   ├── class_schema.py
+│   │   ├── grade_schema.py
+│   │   ├── professor_schema.py
+│   │   ├── student_schema.py
+│   │   ├── subject_schema.py
+│   │   └── trimester_schema.py
+│   ├── services
+│   │   └── professor_service.py
+│   ├── utils
+│   │   ├── database_nosql.py
+│   │   ├── database_sql.py
+│   │   ├── env.py
+│   │   └── setup_mongodb.py
+│   └── main.py
+├── tests
+├── .env.template
+├── .gitignore
+├── README.md
+├── requirements.txt
+└── run.py
 ```
-
-
 ## Documentation
 
 All project-related documents are stored in the `docs` folder. This includes:

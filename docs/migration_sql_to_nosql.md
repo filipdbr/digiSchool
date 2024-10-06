@@ -8,14 +8,10 @@ In the current SQL model, data is organized in a normalized fashion across multi
 
 - **t_eleve (Student)**: Contains information about students.
 - **t_classe (Class)**: Contains information about classes.
-- **t_prof (Teacher)**: Contains information about teachers.
+- **t_prof (Professor)**: Contains information about teachers.
 - **t_matiere (Subject)**: Contains information about subjects.
 - **t_notes (Notes)**: Stores grades given to students for various subjects.
 - **t_trimestre (Trimester)**: Contains information about the trimesters.
-
-These tables are linked by foreign keys to maintain data integrity, with relationships defined as follows:
-- **Students** (`t_eleve`) are linked to **classes** (`t_classe`) via `classe_id`.
-- **Notes** (`t_notes`) are linked to **students**, **teachers**, **subjects**, and **trimesters** via various foreign keys (`ideleve`, `idprof`, `idmatiere`, `idtrimestre`).
 
 In the SQL model, relationships are established using **JOINs** between tables to fetch complete information about entities. This approach, while highly normalized, can result in complex queries and reduced performance for read-heavy applications.
 
