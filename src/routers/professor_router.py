@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 @router.post("/add")
-async def add_professor_to_classes(
+def add_professor_to_classes(
     professor_data: ProfessorAPI,
     class_names: List[str] = Query(..., description="List of class names to assign the professor to")
 ):
@@ -30,7 +30,7 @@ async def add_professor_to_classes(
 
 
 @router.get("/{id_prof}/info", response_model=ProfessorResponse)
-async def find_professor_by_id(id_prof: int):
+def get_professor_by_id(id_prof: int):
     """
     Get info about a specific teacher. Find by ID.
 
@@ -40,7 +40,7 @@ async def find_professor_by_id(id_prof: int):
     return professor
 
 @router.get("/get/all", response_model=List[ProfessorResponse])
-async def view_all_professors() -> list[ProfessorResponse]:
+def view_all_professors() -> list[ProfessorResponse]:
     """
     See all professors.
     """
@@ -53,8 +53,9 @@ def get_students_with_grades_by_professor(professor_id: int):
 
     Get the list of students with notes by professor ID.
 
-    Comment: We provide user with partial inforation, which are interesting for the user. There is an option to add more data/info.
+    Comment: We provide user with partial inforation, which are interesting for the user. There is an option to add more data/info
     """
+
     try:
         data = get_professors_with_students_and_grades_by_id(professor_id)
         return data
@@ -65,7 +66,7 @@ def get_students_with_grades_by_professor(professor_id: int):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 @router.patch("/update/details/{professor_id}")
-async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema):
+def update_partially(professor_id: int, update_data: ProfessorUpdateSchema):
     """
     Update details of a professor.
 
@@ -84,7 +85,7 @@ async def update_partially(professor_id: int, update_data: ProfessorUpdateSchema
 
 
 @router.put("/update/{professor_id}")
-async def update_completely(professor_id: int, update_data: ProfessorUpdateSchema):
+def update_completely(professor_id: int, update_data: ProfessorUpdateSchema):
     """
     Update all thew details of a professor.
 
@@ -101,7 +102,7 @@ async def update_completely(professor_id: int, update_data: ProfessorUpdateSchem
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/delete/{professor_id}")
-async def delete_professor(professor_id: int):
+def delete_professor(professor_id: int):
     """
     Delete a professor by their ID.
 
