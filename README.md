@@ -1,4 +1,4 @@
-## *This is a draft*
+# DigiSchool: School Management API with FastAPI, MongoDB, and MariaDB
 
 ## Description
 
